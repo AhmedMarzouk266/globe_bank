@@ -1,10 +1,12 @@
+<?php include(SHARED_PATH . '/public_header.php'); ?>
+
 <?php require_once('../private/initialize.php'); ?>
 
 <?php
     $preview = $_GET['preview'] ?? false ;
 ?>
 
-<?php include(SHARED_PATH . '/public_header.php'); ?>
+
 
 
 
