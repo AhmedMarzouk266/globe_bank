@@ -7,7 +7,9 @@ function admin_log_in($admin){ // assoc. array
         // storing id and username and also the last login time in sessions:
         $_SESSION['admin_id']= $admin['id'];
         $_SESSION['username']= $admin['username'];
+        $_SESSION['super_admin']= $admin['super_admin'];
         $_SESSION['last_login']= time();
+    
         
         return true;
     }
@@ -15,9 +17,18 @@ function admin_log_in($admin){ // assoc. array
 function admin_log_out(){
     unset($_SESSION['admin_id']);
     unset($_SESSION['username']);
+    unset($_SESSION['super_admin']);
     unset($_SESSION['last_login']);
     
     return true;
+}
+
+function super_admin_logged_in(){
+    $flag = '0' ; 
+    if($_SESSION['super_admin']=='1'){
+        $flag = '1' ;
+    } 
+    return $flag;
 }
 
 

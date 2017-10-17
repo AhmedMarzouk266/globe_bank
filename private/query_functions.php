@@ -258,11 +258,12 @@ function insert_admin($admin){
     $hashed_password = password_hash($admin['password'] , PASSWORD_BCRYPT)  ; 
     
     $sql = "INSERT INTO admins ";
-    $sql .= "(first_name,last_name,email,username,hashed_password) ";
+    $sql .= "(first_name,last_name,email,username,super_admin,hashed_password) ";
     $sql .= "VALUES ("."'".db_escape($admin['first_name'] )."',";
     $sql .= "'".db_escape($admin['last_name'] )."',";
     $sql .= "'".db_escape($admin['email'] )."',";
     $sql .= "'".db_escape($admin['username'] )."',";
+    $sql .= "'".db_escape($admin['super_admin'] )."',";
     $sql .= "'".db_escape($hashed_password)."' ";
     $sql .= ");";
     // query :
@@ -318,7 +319,6 @@ function edit_admin_by_id($admin){
     
     $password_sent = (has_presense($admin['password'] )) ?? false ;
     $errors        = validate_admin($admin,['password_required'=>$password_sent]);
-    
     if(!empty($errors)){
         return $errors; // if there are errors in this array, the rest of the code will not run.
     }
@@ -343,7 +343,8 @@ function edit_admin_by_id($admin){
     if($password_sent){
         $sql .="hashed_password ='".db_escape($hashed_password)."', ";        
     }
-    $sql .= "username = '".db_escape($admin['username'] )."' ";
+    $sql .= "username = '".db_escape($admin['username'] )."', ";
+    $sql .= "super_admin = '".db_escape($admin['super_admin'] )."' ";
     $sql .="WHERE id='".db_escape($admin['id'] )."' ";
     $sql .= "LIMIT 1"; // limet for only one row.
     

@@ -1,5 +1,5 @@
 <?php require_once('../../../private/initialize.php');
-
+ require_login();
 // we check the id at first, if there is id its okay if not so back to the list
     $id= isset($_GET['id']) ? $_GET['id']: redirect_to("index.php");
     $menu_name= isset($_GET['menu_name']) ? $_GET['menu_name']: redirect_to("index.php");

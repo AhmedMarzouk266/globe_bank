@@ -1,6 +1,7 @@
 <?php require_once('../../../private/initialize.php'); ?>
 
 <?php
+ require_login();
 // $id = isset($_GET['id']) ? $_GET['id'] : '1';
 $id = $_GET['id'] ?? '1'; // PHP > 7.0
 
@@ -43,6 +44,10 @@ $admin = find_admin_by_id($id);
       <dl>
         <dt>Username</dt>
         <dd><?php echo $admin['username'] ; ?></dd>
+      </dl>
+      <dl>
+        <dt>Super Admin</dt>
+        <dd><?php echo $admin['super_admin'] ; ?></dd>
       </dl>
     </div>
 

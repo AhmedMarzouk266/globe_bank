@@ -1,4 +1,9 @@
 <?php require_once('../../../private/initialize.php');
+   require_login();
+     $allowed = super_admin_logged_in();
+    if(!$allowed){
+        redirect_to(WWW_ROOT.'/not_allowed.php');
+    }
 
 // we check the id at first, if there is id its okay if not so back to the list
     $id= isset($_GET['id']) ? $_GET['id']: redirect_to("index.php");

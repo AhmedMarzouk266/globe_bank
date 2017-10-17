@@ -4,6 +4,7 @@
 
     // our funcitons:
 require_once('../../../private/initialize.php');
+ require_login();
 // get number of rows:
    $pages_set = find_all_pages();
    $count = mysqli_num_rows($pages_set); // number of rows to use for the position.

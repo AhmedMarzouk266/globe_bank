@@ -1,6 +1,5 @@
 <?php require_once('../../private/initialize.php'); ?>
-
-<?php require_login(); ?>
+  <?php require_login(); ?>
 
 <?php $page_title= "Staff Menu" ; ?>
     <!-- this variabe $page_title is availabe in all the included files we have here ! -->

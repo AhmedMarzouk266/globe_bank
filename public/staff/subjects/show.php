@@ -1,5 +1,5 @@
 <?php require_once('../../../private/initialize.php'); ?>
-
+ require_login();
 <?php
 // we need to check if the variable exists in the GET array is set:
 

@@ -1,7 +1,7 @@
 <?php
     // a page for creating a new form.
 require_once('../../../private/initialize.php'); // calling our functions
-
+ require_login();
 // get number of rows:
    $pages_set = find_all_pages();
    $count = mysqli_num_rows($pages_set); // number of rows to use for the position.

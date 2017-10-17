@@ -4,6 +4,13 @@
 
     // our funcitons:
 require_once('../../../private/initialize.php');
+  require_login();
+
+  $allowed = super_admin_logged_in();
+    if(!$allowed){
+        redirect_to(WWW_ROOT.'/not_allowed.php');
+    }
+  
 // get number of rows:
    $admin_set = find_all_admins();
    $count = mysqli_num_rows($admin_set);
@@ -26,6 +33,7 @@ if(request_is_post()){
    $admin['last_name']        = $_POST['last_name'] ?? '';
    $admin['email']            = $_POST['email'] ?? '' ;
    $admin['username']         = $_POST['username'] ?? '' ;
+   $admin['super_admin']      = $_POST['super_admin'] ?? '' ;
    $admin['password']         = $_POST['password'] ?? '' ;
    $admin['confirm_password'] = $_POST['confirm_password'] ?? '' ;
 
@@ -80,6 +88,14 @@ include (SHARED_PATH."/staff_header.php");
       <dl>
         <dt>Username</dt>
         <dd><input type="text" name="username" value="<?php echo $admin['username'];?>" /></dd>
+      </dl>
+      <dl>
+        <dt>Super Admin</dt>
+        <dd>
+          <input type="hidden" name="super_admin" value="0" />
+          <input type="checkbox" name="super_admin" value="1" <?php if($admin['super_admin']==1){echo "checked";}?> />        
+        </dd><br>
+        <p> Super Admin Can Edit Other Admins..</p>
       </dl>
       <dl>
         <dt>Password</dt>

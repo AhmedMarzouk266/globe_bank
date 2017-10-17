@@ -1,4 +1,6 @@
-<?php require_once('../../../private/initialize.php'); ?>
+<?php require_once('../../../private/initialize.php'); 
+ require_login();
+?>
 
 <?php
 // i would like to make a quesry from the data base and then free the memory after using it.

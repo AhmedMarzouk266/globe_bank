@@ -1,5 +1,5 @@
 <?php require_once('../../../private/initialize.php');
-
+ require_login();
     $menu_name = isset($_POST['menu_name']) ? $_POST['menu_name'] : "" ;
     $position = isset($_POST['position']) ? $_POST['position'] : "" ;
     $visible = isset($_POST['visible']) ? $_POST['visible'] : "" ;
