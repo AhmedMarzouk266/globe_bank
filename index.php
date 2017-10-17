@@ -1,1 +1,0 @@
-<a href="public/">Enter Site..</a>
