@@ -1,27 +1,28 @@
 <?php require_once('../../../private/initialize.php');
 // initial values for the first load of the page.
-   $first_name       = $_POST['first_name']?? '';
-   $last_name        = $_POST['last_name'] ?? '';
-   $email            = $_POST['email'] ?? '' ;
-   $username         = $_POST['username'] ?? '' ;
-   $password         = $_POST['password'] ?? '' ;
-   $confirm_password = $_POST['confirm_password'] ?? '' ;
+   $admin=[];
+   $admin['first_name']       = $_POST['first_name']?? '';
+   $admin['last_name']        = $_POST['last_name'] ?? '';
+   $admin['email']            = $_POST['email'] ?? '' ;
+   $admin['username']         = $_POST['username'] ?? '' ;
+   $admin['password']         = $_POST['password'] ?? '' ;
+   $admin['confirm_password'] = $_POST['confirm_password'] ?? '' ;
 
 if(request_is_post()){
     
     // a page where the form paramteres are submitted: menu_name position visible
     
-   $first_name       = $_POST['first_name']?? '';
-   $last_name        = $_POST['last_name'] ?? '';
-   $email            = $_POST['email'] ?? '' ;
-   $username         = $_POST['username'] ?? '' ;
-   $password         = $_POST['password'] ?? '' ;
-   $confirm_password = $_POST['confirm_password'] ?? '' ;
+   $admin['first_name']       = $_POST['first_name'] ?? '';
+   $admin['last_name']        = $_POST['last_name'] ?? '';
+   $admin['email']            = $_POST['email'] ?? '' ;
+   $admin['username']         = $_POST['username'] ?? '' ;
+   $admin['password']         = $_POST['password'] ?? '' ;
+   $admin['confirm_password'] = $_POST['confirm_password'] ?? '' ;
 
 
 // inserting the data to the database:
     
-$result = insert_admin($first_name,$last_name,$email,$username,$password,$confirm_password);
+$result = insert_admin($admin);
     if($result === true){
         $id=mysqli_insert_id($db); // to know the last inserted ID.
         //before the redirect I want to stor a message.
@@ -53,28 +54,32 @@ $count=mysqli_num_rows($admins_set);
     <form action="<?php echo "new.php";?>" method="post">
       <dl>
         <dt>First Name</dt>
-        <dd><input type="text" name="first_name" value="<?php echo $first_name;?>" /></dd>
+        <dd><input type="text" name="first_name" value="" /></dd>
       </dl>
       <dl>
         <dt>Last Name</dt>
-        <dd><input type="text" name="last_name" value="<?php echo $last_name;?>" /></dd>
+        <dd><input type="text" name="last_name" value="" /></dd>
       </dl>
       <dl>
         <dt>Email</dt>
-        <dd><input type="text" name="email" value="<?php echo $email;?>" /></dd>
+        <dd><input type="text" name="email" value="" /></dd>
       </dl>
       <dl>
         <dt>Username</dt>
-        <dd><input type="text" name="username" value="<?php echo $username;?>" /></dd>
+        <dd><input type="text" name="username" value="" /></dd>
       </dl>
       <dl>
         <dt>Password</dt>
-        <dd><input type="text" name="password" value="<?php echo $password;?>" /></dd>
+        <dd><input type="password" name="password" value="" /></dd>
       </dl>
        <dl>
         <dt>Confirm Password&nbsp;</dt>
-        <dd><input type="text" name="confirm_password" value="<?php echo $confirm_password;?>" /></dd>
+        <dd><input type="password" name="confirm_password" value="" /></dd>
       </dl>
+      <p>
+          Password should have at least 12 characters, one Upercase, one Lowercase, number and one
+          symbol.
+      </p>
       
       <div id="operations">
         <input type="submit" value="Create Admin" />

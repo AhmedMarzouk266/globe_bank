@@ -3,7 +3,7 @@
 <?php require_once('../private/initialize.php'); ?>
 
 <?php
-    $preview = $_GET['preview'] ?? false ;
+    $preview = $_GET['preview'] ==='true' && is_logged_in() ? true : false ;
 ?>
 
 

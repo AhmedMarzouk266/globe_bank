@@ -98,62 +98,69 @@ function validate_page($menu_name,$position,$visible,$content,$id){
 }
 
 // admin validations:
-function validate_admin($first_name,$last_name,$email,$username,$password,$confirm_password,$id){
+function validate_admin($admin , $options=[]){
     $errors = [];
+    $password_required = $options['password_required'];
         // first name : more than 2 letters.not blank.
-    if (!has_presense($first_name)){
+    if (!has_presense($admin['first_name'])){
         $errors['first_name']="First Name should have a value..";
     }
-    elseif (!has_length_greater_than($first_name,2))
+    elseif (!has_length_greater_than($admin['first_name'],2))
     {
         $errors['first_name']="First Name should be more than 2 letters..";
     }
     
         // Last name : more than 2 letters.not blank.
-    if (!has_presense($last_name)){
+    if (!has_presense($admin['last_name'])){
         $errors['last_name']="Last Name should have a value..";
     }
-    elseif (!has_length_greater_than($last_name,2))
+    elseif (!has_length_greater_than($admin['last_name'],2))
     {
         $errors['last_name']="Last Name should be more than 2 letters..";
     }
     
         // Email Format.
-    if(!has_valid_email_format($email)){
+    if(!has_valid_email_format($admin['email'])){
         $errors['email']="Email has the Wrong Format..";
     }
         
         // username: not blank , more than 2 letters and uniqe.
     // not blank 
-    if(!has_presense($username)){
+    if(!has_presense($admin['username'])){
         $errors['username']= "Username can not be blank..";
     }
     // more than 2 letters:
-    elseif(!has_length_greater_than($username,2)){
+    elseif(!has_length_greater_than($admin['username'],2)){
         $errors['username']="Username should be more than 2 letters..";
     }
     //unique.
-    elseif(!has_unique_admin_username($username,$id)){
+    elseif(!has_unique_admin_username($admin['username'],$admin['id'] ?? 0)){
          $errors['username']="Sorry this Username has already been used..";
     }
     
         //password: more than 12 chars, has one uppercase one lower case and a number and sympol,matches !
     // 12 chars
-    if(!has_length_greater_than($password,12)){
+    if($password_required == 'true'){
+        
+        $uppercase = preg_match('@[A-Z]@',$admin['password']);
+        $lowercase = preg_match('@[a-z]@',$admin['password']);
+        $numbers   = preg_match('@[0-9]@',$admin['password']);
+        $symbols   = preg_match('/[^A-Za-z0-9\s]/',$admin['password']); // something exept these
+        
+        if(!has_length_greater_than($admin['password'],12)){
         $errors['password']="Sorry this Password isn't Strong enough..";
+        }
+        // has one uper case:
+        elseif(!$uppercase || !$lowercase || !$numbers || !$symbols){ // if any of them are false so give an error 
+            $errors['password']="Password should have at least one Upercase, One lowercase and one number..";
+        }
+       // matches confirm_password:
+        elseif($admin['password'] !== $admin['confirm_password'] ){
+            $errors['password']= "Password does not match..";
+        }
+    
     }
-    // has one uper case:
-    $uppercase = preg_match('@[A-Z]@',$password);
-    $lowercase = preg_match('@[a-z]@',$password);
-    $numbers   = preg_match('@[0-9]@',$password);
-    $symbols   = preg_match('/[^A-Za-z0-9\s]/',$password); // something exept these
-    if(!$uppercase || !$lowercase || !$numbers || !$symbols){ // if any of them are false so give an error 
-        $errors['password']="Password should have at least one Upercase, One lowercase and one number..";
-    }
-   // matches confirm_password:
-    if($password !== $confirm_password){
-        $errors['password']= "Password does not match..";
-    }
+    
     
    return $errors;
 }

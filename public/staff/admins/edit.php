@@ -12,7 +12,9 @@ require_once('../../../private/initialize.php');
    
     // initial values for the form parameters: to display them while editing.
 
-$id = isset($_GET['id']) ? $_GET['id'] : '0';
+$admin = [];
+
+$admin['id'] = isset($_GET['id']) ? $_GET['id'] : '0';
 
     // processing the form:
 
@@ -20,18 +22,19 @@ if(request_is_post()){
     
 // first we get the data from the POST array:
     
-   $first_name       = $_POST['first_name']?? '';
-   $last_name        = $_POST['last_name'] ?? '';
-   $email            = $_POST['email'] ?? '' ;
-   $username         = $_POST['username'] ?? '' ;
-   $password         = $_POST['password'] ?? '' ;
-   $confirm_password = $_POST['confirm_password'] ?? '' ;
+   $admin['first_name']       = $_POST['first_name'] ?? '';
+   $admin['last_name']        = $_POST['last_name'] ?? '';
+   $admin['email']            = $_POST['email'] ?? '' ;
+   $admin['username']         = $_POST['username'] ?? '' ;
+   $admin['password']         = $_POST['password'] ?? '' ;
+   $admin['confirm_password'] = $_POST['confirm_password'] ?? '' ;
+
    
 
     
 // editing the parameters: // better if to send array not 
     
-$result = edit_admin_by_id($id,$first_name,$last_name,$email,$username,$password,$confirm_password);
+$result = edit_admin_by_id($admin);
     if($result === true){
         redirect_to("index.php");
     }else
@@ -43,7 +46,8 @@ $result = edit_admin_by_id($id,$first_name,$last_name,$email,$username,$password
 }else{
    // $admin=find_admin_by_id($id); // an assoc array         
 } 
-$admin=find_admin_by_id($id); // an assoc array       
+
+$admin = find_admin_by_id($admin['id']); // an assoc array       
 
 ?>
 
@@ -75,15 +79,15 @@ include (SHARED_PATH."/staff_header.php");
       </dl>
       <dl>
         <dt>Username</dt>
-        <dd><input type="text" name="username" value="<?php echo $admin['username']?>;" /></dd>
+        <dd><input type="text" name="username" value="<?php echo $admin['username'];?>" /></dd>
       </dl>
       <dl>
         <dt>Password</dt>
-        <dd><input type="text" name="password" value="<?php echo $admin['hashed_password']?>" /></dd>
+        <dd><input type="password" name="password" value="" /></dd>
       </dl>
       <dl>
         <dt>Confirm Password&nbsp;</dt>
-        <dd><input type="text" name="confirm_password" value="<?php echo $confirm_password;?>" /></dd>
+        <dd><input type="password" name="confirm_password" value="" /></dd>
       </dl>
       <div id="operations">
         <input type="submit" value="Edit Admin" />

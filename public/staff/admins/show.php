@@ -44,10 +44,6 @@ $admin = find_admin_by_id($id);
         <dt>Username</dt>
         <dd><?php echo $admin['username'] ; ?></dd>
       </dl>
-      <dl>
-        <dt>Password</dt>
-        <dd><?php echo h($admin['hashed_password']); ?></dd>
-      </dl>
     </div>
 
 

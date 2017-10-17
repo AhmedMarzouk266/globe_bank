@@ -31,7 +31,6 @@ $page_title="Staff Admins" ;
                 <th>Last Name</th>
                 <th>Email</th>
                 <th>UserName</th>
-                <th>Password</th>
                 <th>&nbsp;</th>
                 <th>&nbsp;</th>
                 <th>&nbsp;</th>
@@ -45,7 +44,7 @@ $page_title="Staff Admins" ;
                     <td><?php echo $admin['last_name'] ; ?></td>
                     <td><?php echo h($admin['email']); ?></td>
                     <td><?php echo h($admin['username']); ?></td>
-                    <td><?php echo h($admin['hashed_password']); ?></td>
+    
                     <td><a class="action" href="<?php echo WWW_ROOT ."/staff/admins/show.php?username={$admin['username']} & id={$admin['id']}"; ?>">View</a></td>
                     <td><a class="action" href="<?php echo WWW_ROOT ."/staff/admins/edit.php?id={$admin['id']} & username={$admin['username']} " ;?>">Edit</a></td>
                     <!-- href for edit is to the edit page-->

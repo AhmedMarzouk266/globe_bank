@@ -23,6 +23,9 @@
     require_once('query_functions.php');
 // validation functions:
     require_once('validation_functions.php');
+// authentication functions:
+    require_once('auth_functions.php');
+
 
 
 //connect to the database

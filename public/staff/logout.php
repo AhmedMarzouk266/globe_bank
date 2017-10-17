@@ -2,6 +2,7 @@
 
 <?php
 // logging out page is unsetting the session values.
-    unset($_SESSION['username']);
+
+    admin_log_out();
     redirect_to('index.php');
 ?>

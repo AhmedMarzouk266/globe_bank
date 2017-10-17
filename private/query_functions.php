@@ -245,23 +245,24 @@ function find_all_admins(){
     
 }
 
-function insert_admin($first_name,$last_name,$email,$username,$password,$confirm_password){
-    global $db ;
+function insert_admin($admin){
+   global $db ;
     
-    $errors = validate_admin($first_name,$last_name,$email,$username,$password,$confirm_password,'0');
+
+   $errors = validate_admin($admin);
     
     if(!empty($errors)){
         return $errors; // if there are errors in this array, the rest of the code will not run.
     }
   
-    $hashed_password = $password ; 
+    $hashed_password = password_hash($admin['password'] , PASSWORD_BCRYPT)  ; 
     
     $sql = "INSERT INTO admins ";
     $sql .= "(first_name,last_name,email,username,hashed_password) ";
-    $sql .= "VALUES ("."'".db_escape($first_name)."',";
-    $sql .= "'".db_escape($last_name)."',";
-    $sql .= "'".db_escape($email)."',";
-    $sql .= "'".db_escape($username)."',";
+    $sql .= "VALUES ("."'".db_escape($admin['first_name'] )."',";
+    $sql .= "'".db_escape($admin['last_name'] )."',";
+    $sql .= "'".db_escape($admin['email'] )."',";
+    $sql .= "'".db_escape($admin['username'] )."',";
     $sql .= "'".db_escape($hashed_password)."' ";
     $sql .= ");";
     // query :
@@ -299,29 +300,56 @@ function find_admin_by_id($id) {
     return $page; // returns an assoc. array
   }
 
+function find_admin_by_username($username) {
+    global $db;
 
-function edit_admin_by_id($id,$first_name,$last_name,$email,$username,$password,$confirm_password){
+    $sql = "SELECT * FROM admins ";
+    $sql .= "WHERE username='" . db_escape($username) . "'";
+    $result = mysqli_query($db, $sql);
+    confirm_query_result($result);
+    $page = mysqli_fetch_assoc($result);
+    mysqli_free_result($result);
+    return $page; // returns an assoc. array
+  }
+
+
+function edit_admin_by_id($admin){
     global $db;
     
-    $errors = validate_admin($first_name,$last_name,$email,$username,$password,$confirm_password,$id) ;
+    $password_sent = (has_presense($admin['password'] )) ?? false ;
+    $errors        = validate_admin($admin,['password_required'=>$password_sent]);
     
     if(!empty($errors)){
         return $errors; // if there are errors in this array, the rest of the code will not run.
     }
     
+    $hashed_password = password_hash($admin['password'], PASSWORD_BCRYPT)  ; 
+    
+    /*
+    * here is something we want to add to our Edit function.
+    * we want make that updating the password is OPTIONAL ! 
+    * so we will pass an option array here also to Edit function.
+    * if the password is sent by user, so it needs to be updated if not so-
+    * do not make the validation do not send to the database.
+    * the same with the validation function will be done !
+    */
+    
+    
     
     $sql ="UPDATE admins ";
-    $sql .= "SET first_name='".db_escape($first_name)."', ";
-    $sql .= "last_name='".db_escape($last_name)."'," ;
-    $sql .= "email='".db_escape($email)."', ";
-    $sql .= "username = '".db_escape($username)."', ";
-    $sql .="hashed_password ='".db_escape($password)."' ";
-    $sql .="WHERE id='".db_escape($id)."' ";
+    $sql .= "SET first_name='".db_escape($admin['first_name'] )."', ";
+    $sql .= "last_name='".db_escape($admin['last_name'] )."'," ;
+    $sql .= "email='".db_escape($admin['email'] )."', ";
+    if($password_sent){
+        $sql .="hashed_password ='".db_escape($hashed_password)."', ";        
+    }
+    $sql .= "username = '".db_escape($admin['username'] )."' ";
+    $sql .="WHERE id='".db_escape($admin['id'] )."' ";
     $sql .= "LIMIT 1"; // limet for only one row.
     
     $result=mysqli_query($db,$sql);
     if($result){
-        $_SESSION['status_message']= "Admin '".$username."' Has been Successfully Edited..";
+        $_SESSION['status_message']= "Admin '".$admin['username'] ."' Has been Successfully Edited..";
         redirect_to("index.php");
     }else{
         mysqli_error($db);
